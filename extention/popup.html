@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+  <script src="lucide.min.js"></script>
+</head>
+<body>
+  <div class="app">
+
+    <!-- ── Sidebar Navigation ── -->
+    <nav class="sidebar">
+      <div class="sidebar-top">
+        <div class="app-logo">
+          <img src="icon48.png" alt="URL Vault" class="logo-img">
+        </div>
+        <button id="viewRecentsBtn" class="nav-btn active" title="Recents">
+          <i data-lucide="clock"></i>
+        </button>
+        <button id="viewGroupsBtn" class="nav-btn" title="Groups">
+          <i data-lucide="folder"></i>
+        </button>
+      </div>
+      <div class="sidebar-bottom">
+        <button id="settingsBtn" class="nav-btn" title="Settings">
+          <i data-lucide="settings-2"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ── Main Content ── -->
+    <main class="main-content">
+
+      <!-- ── Top Save Zone ── -->
+      <div class="save-zone">
+        <div class="current-page-info">
+          <div class="page-meta">
+            <span class="page-label">Current Tab</span>
+            <div id="savedStatusPill" class="saved-pill" style="display:none;">
+              <i data-lucide="check-circle-2"></i>
+              <span>Saved</span>
+            </div>
+          </div>
+          <div id="currentUrl" class="current-url-text">Loading...</div>
+        </div>
+        <div class="save-actions">
+          <button id="saveBtn" class="btn btn-primary">
+            <i data-lucide="bookmark"></i>
+            <span>Save Tab</span>
+          </button>
+          <button id="saveAllBtn" class="btn btn-ghost">
+            <i data-lucide="layers"></i>
+            <span>All</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="content-divider"></div>
+
+      <!-- ── Recents View ── -->
+      <div id="recentsView" class="view-panel active">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-title">Vault</span>
+            <div id="savedCount" class="count-pill">0</div>
+          </div>
+          <div class="panel-actions">
+            <button id="openAllBtn" class="action-btn" title="Open All">
+              <i data-lucide="external-link"></i>
+            </button>
+            <button id="clearAllBtn" class="action-btn danger" title="Clear All">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="search-bar-wrap">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search saved links..." autocomplete="off">
+          <button id="clearSearchBtn" class="clear-search-btn" style="display: none;">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+
+        <div class="scroll-area">
+          <ul id="urlList"></ul>
+        </div>
+      </div>
+
+      <!-- ── Groups View ── -->
+      <div id="groupsView" class="view-panel">
+        <div class="panel-header">
+          <span class="panel-title">Groups</span>
+          <button id="addGroupBtn" class="action-btn accent" title="New Group">
+            <i data-lucide="plus"></i>
+          </button>
+        </div>
+
+        <div id="newGroupForm" class="inline-form">
+          <input type="text" id="newGroupNameInput" placeholder="Group name..." autocomplete="off">
+          <div class="inline-form-actions">
+            <button id="cancelGroupBtn" class="btn-xs btn-cancel">Cancel</button>
+            <button id="saveGroupBtn" class="btn-xs btn-confirm">Create</button>
+          </div>
+        </div>
+
+        <div class="scroll-area">
+          <ul id="groupsList"></ul>
+        </div>
+      </div>
+
+      <!-- ── Settings View ── -->
+      <div id="settingsView" class="view-panel">
+        <div class="panel-header">
+          <span class="panel-title">Settings</span>
+        </div>
+        <div class="scroll-area">
+          <div class="settings-list">
+
+            <p class="settings-section-label">Vault Insights</p>
+            <div class="stats-container">
+              <div class="stat-card">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Saved Links</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="statYoutube">0</div>
+                <div class="stat-label">YouTube</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="statDomain">None</div>
+                <div class="stat-label">Top Domain</div>
+              </div>
+            </div>
+
+            <p class="settings-section-label">Behaviour</p>
+
+            <div class="settings-card">
+              <div class="settings-card-left">
+                <div class="settings-icon-wrap">
+                  <i data-lucide="zap"></i>
+                </div>
+                <div class="settings-text">
+                  <span class="settings-title">Auto-remove on Open</span>
+                  <span class="settings-desc">Delete URL from vault when you open it.</span>
+                </div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="deleteAfterOpenCheck">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+              </label>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-left">
+                <div class="settings-icon-wrap">
+                  <i data-lucide="folder-open"></i>
+                </div>
+                <div class="settings-text">
+                  <span class="settings-title">Default Group</span>
+                  <span class="settings-desc">Where new saves are placed by default.</span>
+                </div>
+              </div>
+              <select id="saveGroupSelect" class="settings-select">
+                <option value="">None</option>
+              </select>
+            </div>
+
+            <p class="settings-section-label">Data</p>
+
+            <div class="settings-card">
+              <div class="settings-card-left">
+                <div class="settings-icon-wrap">
+                  <i data-lucide="hard-drive"></i>
+                </div>
+                <div class="settings-text">
+                  <span class="settings-title">Backup & Restore</span>
+                  <span class="settings-desc">Export or import your vault as JSON.</span>
+                </div>
+              </div>
+              <div class="settings-btn-row">
+                <button id="exportBtn" class="settings-pill-btn">
+                  <i data-lucide="download"></i> Export
+                </button>
+                <button id="importBtn" class="settings-pill-btn">
+                  <i data-lucide="upload"></i> Import
+                </button>
+                <input type="file" id="importFile" style="display:none;" accept=".json">
+              </div>
+            </div>
+
+            <div class="settings-card danger-card">
+              <div class="settings-card-left">
+                <div class="settings-icon-wrap danger-icon">
+                  <i data-lucide="alert-triangle"></i>
+                </div>
+                <div class="settings-text">
+                  <span class="settings-title">Factory Reset</span>
+                  <span class="settings-desc">Wipe all URLs, groups and settings.</span>
+                </div>
+              </div>
+              <button id="resetAllBtn" class="settings-pill-btn danger-pill">
+                <i data-lucide="trash-2"></i> Reset
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
