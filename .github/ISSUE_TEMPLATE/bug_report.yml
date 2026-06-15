@@ -1,0 +1,48 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with URL Vault to help us improve.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting this issue! Please provide as much detail as possible to help us reproduce and fix it.
+  - type: textarea
+    id: describe-bug
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+      placeholder: E.g., The search bar doesn't filter URLs properly when...
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps To Reproduce
+      description: Explain how we can reproduce this behavior.
+      placeholder: |
+        1. Open the URL Vault popup
+        2. Click on...
+        3. See error...
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: E.g., The list should filter and display only matching URLs.
+    validations:
+      required: true
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser & Version
+      description: E.g., Brave 1.67, Chrome 126
+      placeholder: Brave Version 1.67.115
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the problem here.

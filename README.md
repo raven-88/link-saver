@@ -1,5 +1,9 @@
 # 🔒 Link Saver (URL Vault)
 
+[![Package Extension](https://github.com/raven-88/link-saver/actions/workflows/package.yml/badge.svg)](https://github.com/raven-88/link-saver/actions/workflows/package.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/Platform-Brave%20%7C%20Chrome-orange.svg)](#)
+
 A premium, aesthetically pleasing browser extension designed specifically for Brave and Chrome-based browsers. **Link Saver** allows you to easily capture, catalog, and vault URLs with a single click, providing a native-feeling, elegant experience.
 
 ---
@@ -23,17 +27,21 @@ A premium, aesthetically pleasing browser extension designed specifically for Br
 
 ## 📂 File Structure
 
-```
-├── extention/                 # Chrome extension source files
+```text
+├── .github/                   # GitHub configurations (Workflows & Templates)
+│   ├── ISSUE_TEMPLATE/        # Custom issue forms
+│   └── workflows/             # CI/CD package-on-release workflows
+├── extension/                 # Chrome/Brave extension source files
 │   ├── manifest.json          # Extension configuration & MV3 definitions
 │   ├── popup.html             # The main extension popup UI
 │   ├── popup.css              # Custom styling (premium dark mode/glassmorphism)
 │   ├── popup.js               # Extension logic (saving, search, list rendering)
 │   ├── background.js          # Background service worker
 │   ├── lucide.min.js          # Locally bundled Lucide icons
-│   └── assets/                # Icons & status indicators
-├── frontend design/           # Design files and specifications
-└── agent.md                   # Agent guidelines and design system rules
+│   └── *.png                  # Assets and icons
+├── LICENSE                    # MIT License open source details
+├── CONTRIBUTING.md            # Guidelines for local setup & PR submission
+└── SECURITY.md                # Security vulnerability reporting process
 ```
 
 ---
@@ -46,7 +54,7 @@ A premium, aesthetically pleasing browser extension designed specifically for Br
    - **Chrome**: `chrome://extensions/`
 3. Toggle the **Developer mode** switch in the top right corner.
 4. Click on **Load unpacked** in the top left.
-5. Select the **`extention`** folder from this project directory.
+5. Select the **`extension`** folder from this project directory.
 
 ---
 
@@ -54,3 +62,11 @@ A premium, aesthetically pleasing browser extension designed specifically for Br
 
 - `activeTab`: To retrieve the title and URL of the active tab you wish to save.
 - `storage`: To save, persist, and fetch your URLs locally.
+- `tabs` & `scripting`: To ensure reliable interaction and communication with browser tabs.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+
