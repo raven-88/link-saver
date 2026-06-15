@@ -659,7 +659,7 @@ li.yt-item .url-favicon {
 .group-selector-wrap { display: none; flex-direction: column; gap: 5px; margin-top: 5px; width: 100%; }
 .group-selector-wrap.active { display: flex; }
 
-.group-select {
+.group-select, .new-group-inline-input {
   width: 100%;
   background: rgba(0,0,0,0.2);
   border: 1px solid var(--border);
@@ -669,9 +669,10 @@ li.yt-item .url-favicon {
   padding: 5px 8px;
   outline: none;
   cursor: pointer;
+  transition: var(--spring);
 }
 
-.group-select:focus { border-color: var(--accent); }
+.group-select:focus, .new-group-inline-input:focus { border-color: var(--accent); }
 
 .group-selector-actions { display: flex; justify-content: flex-end; gap: 4px; }
 
@@ -687,6 +688,14 @@ li.yt-item .url-favicon {
 .group-select-btn.save:hover { filter: brightness(1.12); }
 .group-select-btn.cancel { color: var(--text-2); }
 .group-select-btn.cancel:hover { background: rgba(255,255,255,0.05); }
+
+/* Hide 3-dots actions menu when inline editing is active */
+ul#urlList li:has(.group-selector-wrap.active) .item-actions,
+ul#urlList li:has(.note-editor.active) .item-actions,
+ul.group-sublist li:has(.group-selector-wrap.active) .item-actions,
+ul.group-sublist li:has(.note-editor.active) .item-actions {
+  display: none !important;
+}
 
 /* ── Item Actions ── */
 .item-actions {

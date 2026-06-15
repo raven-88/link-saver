@@ -558,6 +558,28 @@ document.addEventListener('DOMContentLoaded', () => {
       selectEl.appendChild(opt);
     });
 
+    const createOpt = document.createElement('option');
+    createOpt.value = 'NEW_GROUP_ACTION';
+    createOpt.textContent = '➕ Create New Group...';
+    selectEl.appendChild(createOpt);
+
+    const newGroupInput = document.createElement('input');
+    newGroupInput.type = 'text';
+    newGroupInput.className = 'new-group-inline-input';
+    newGroupInput.placeholder = 'Enter new group name...';
+    newGroupInput.style.display = 'none';
+    newGroupInput.style.marginTop = '4px';
+
+    selectEl.addEventListener('change', () => {
+      if (selectEl.value === 'NEW_GROUP_ACTION') {
+        newGroupInput.style.display = 'block';
+        newGroupInput.focus();
+      } else {
+        newGroupInput.style.display = 'none';
+        newGroupInput.value = '';
+      }
+    });
+
     const selectorActions = document.createElement('div');
     selectorActions.className = 'group-selector-actions';
 
@@ -573,28 +595,64 @@ document.addEventListener('DOMContentLoaded', () => {
     selectorActions.appendChild(moveSaveBtn);
 
     groupSelectorWrap.appendChild(selectEl);
+    groupSelectorWrap.appendChild(newGroupInput);
     groupSelectorWrap.appendChild(selectorActions);
 
     moveCancelBtn.onclick = () => {
       groupSelectorWrap.classList.remove('active');
       noteEl.style.display = '';
       selectEl.value = item.groupId || '';
+      newGroupInput.style.display = 'none';
+      newGroupInput.value = '';
     };
 
     moveSaveBtn.onclick = () => {
-      const newGroupId = selectEl.value;
-      chrome.storage.local.get({ urls: [] }, (result) => {
-        const urls = result.urls;
-        const idx = urls.findIndex(u => u.url === item.url);
-        if (idx !== -1) {
-          if (newGroupId) {
+      const selectedVal = selectEl.value;
+      if (selectedVal === 'NEW_GROUP_ACTION') {
+        const newGroupName = newGroupInput.value.trim();
+        if (!newGroupName) return;
+
+        chrome.storage.local.get({ groups: [], urls: [] }, (result) => {
+          const groups = result.groups || [];
+          const urls = result.urls || [];
+          const newGroupId = 'group_' + Date.now();
+          
+          groups.push({
+            id: newGroupId,
+            name: newGroupName,
+            createdAt: Date.now()
+          });
+
+          const idx = urls.findIndex(u => u.url === item.url);
+          if (idx !== -1) {
             urls[idx].groupId = newGroupId;
-          } else {
-            delete urls[idx].groupId;
           }
-          chrome.storage.local.set({ urls }, loadData);
-        }
-      });
+
+          chrome.storage.local.set({ groups, urls }, () => {
+            groupSelectorWrap.classList.remove('active');
+            noteEl.style.display = '';
+            loadData();
+          });
+        });
+      } else {
+        const newGroupId = selectedVal;
+        chrome.storage.local.get({ urls: [] }, (result) => {
+          const urls = result.urls;
+          const idx = urls.findIndex(u => u.url === item.url);
+          if (idx !== -1) {
+            if (newGroupId) {
+              urls[idx].groupId = newGroupId;
+            } else {
+              delete urls[idx].groupId;
+            }
+            chrome.storage.local.set({ urls }, () => {
+              groupSelectorWrap.classList.remove('active');
+              noteEl.style.display = '';
+              loadData();
+            });
+          }
+        });
+      }
     };
 
     // ── YouTube Progress Display ──
