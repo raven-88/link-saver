@@ -659,7 +659,20 @@ li.yt-item .url-favicon {
 .group-selector-wrap { display: none; flex-direction: column; gap: 5px; margin-top: 5px; width: 100%; }
 .group-selector-wrap.active { display: flex; }
 
-.group-select, .new-group-inline-input {
+.group-select {
+  width: 100%;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 11px;
+  padding: 5px 22px 5px 8px;
+  outline: none;
+  cursor: pointer;
+  transition: var(--spring);
+}
+
+.new-group-inline-input {
   width: 100%;
   background: rgba(0,0,0,0.2);
   border: 1px solid var(--border);
@@ -668,7 +681,6 @@ li.yt-item .url-favicon {
   font-size: 11px;
   padding: 5px 8px;
   outline: none;
-  cursor: pointer;
   transition: var(--spring);
 }
 
@@ -733,12 +745,18 @@ li:hover:not(.group-header) .item-actions,
   box-shadow: -10px 0 10px -2px var(--bg-card-hover);
 }
 
+/* Elevate the active list item's stacking context so its dropdown overlays sibling cards */
+ul#urlList li:has(.dropdown-menu.active),
+ul.group-sublist li:has(.dropdown-menu.active) {
+  z-index: 999;
+}
+
 /* ── Dropdown Menu ── */
 .dropdown-menu {
   display: none;
   position: absolute;
   right: 0;
-  bottom: 26px;
+  top: 26px;
   background: var(--bg-card-hover);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -749,7 +767,7 @@ li:hover:not(.group-header) .item-actions,
 }
 
 @keyframes dropdownReveal {
-  from { opacity: 0; transform: translateY(4px) scale(0.96); }
+  from { opacity: 0; transform: translateY(-4px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
@@ -758,7 +776,7 @@ li:hover:not(.group-header) .item-actions,
   flex-direction: column;
   gap: 2px;
   animation: dropdownReveal 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-origin: bottom right;
+  transform-origin: top right;
 }
 
 .dropdown-item {
@@ -780,7 +798,6 @@ li:hover:not(.group-header) .item-actions,
   width: 13px;
   height: 13px;
   stroke-width: 2;
-  overflow: visible;
 }
 
 .dropdown-item:hover {
@@ -1075,10 +1092,10 @@ li:hover:not(.group-header) .item-actions,
   color: var(--text);
   font-family: inherit;
   font-size: 11px;
-  padding: 4px 8px;
+  padding: 4px 22px 4px 8px;
   outline: none;
   cursor: pointer;
-  max-width: 110px;
+  max-width: 140px;
   flex-shrink: 0;
 }
 

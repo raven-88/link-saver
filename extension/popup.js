@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reset All
     resetAllBtn.addEventListener('click', () => {
-      if (confirm('Are you absolutely sure you want to reset URL Vault? This will permanently delete all saved URLs, groups, and settings.')) {
+      if (confirm('Are you absolutely sure you want to reset Link Saver? This will permanently delete all saved URLs, groups, and settings.')) {
         chrome.storage.local.clear(() => {
           loadData();
           deleteAfterOpenCheck.checked = false;

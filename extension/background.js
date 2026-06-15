@@ -1,4 +1,4 @@
-// Background script for URL Vault extension
+// Background script for Link Saver extension
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' || changeInfo.url) {

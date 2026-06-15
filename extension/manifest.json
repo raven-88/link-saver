@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "URL Vault",
+  "name": "Link Saver",
   "version": "1.0",
   "description": "Save URLs to access later. Aesthetically designed for Brave.",
   "icons": {
@@ -26,5 +26,9 @@
     "tabs",
     "storage",
     "scripting"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://youtu.be/*"
   ]
 }

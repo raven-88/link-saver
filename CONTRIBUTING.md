@@ -1,6 +1,6 @@
-# 🤝 Contributing to Link Saver (URL Vault)
+# 🤝 Contributing to Link Saver
 
-Thank you for your interest in contributing to **Link Saver (URL Vault)**! We want to make contributing to this project as easy and transparent as possible.
+Thank you for your interest in contributing to **Link Saver**! We want to make contributing to this project as easy and transparent as possible.
 
 ---
 
@@ -30,7 +30,7 @@ Since this is a vanilla browser extension, there are no build steps required to 
 ### Coding Standards
 - **Vanilla Only**: Keep dependency usage to a minimum. Use vanilla HTML, CSS, and modern ES6+ JavaScript.
 - **Manifest V3**: All updates must comply with Chrome Extension Manifest V3 specifications.
-- **Aesthetic Excellence**: URL Vault prioritizes visual design. Ensure any UI modifications align with the existing glassmorphic, clean, and modern dark mode aesthetic.
+- **Aesthetic Excellence**: Link Saver prioritizes visual design. Ensure any UI modifications align with the existing glassmorphic, clean, and modern dark mode aesthetic.
 - **No Private Keys**: Never check in `.pem` or `.crx` files. They are automatically ignored in `.gitignore`.
 
 ### Git Commit Messages

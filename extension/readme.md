@@ -1,7 +1,7 @@
-# URL Vault
+# Link Saver
 
 ## Description
-URL Vault is a minimal, aesthetically pleasing browser extension designed specifically for Brave. It allows you to easily save the current URL you are viewing to access it later.
+Link Saver is a minimal, aesthetically pleasing browser extension designed specifically for Brave. It allows you to easily save the current URL you are viewing to access it later.
 
 ## Features
 - **Save Current URL**: With a single click, save the active tab's URL.

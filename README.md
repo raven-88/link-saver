@@ -1,4 +1,4 @@
-# 🔒 Link Saver (URL Vault)
+# 🔒 Link Saver
 
 [![Package Extension](https://github.com/raven-88/link-saver/actions/workflows/package.yml/badge.svg)](https://github.com/raven-88/link-saver/actions/workflows/package.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
