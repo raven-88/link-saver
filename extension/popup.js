@@ -746,6 +746,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdown = document.createElement('div');
     dropdown.className = 'dropdown-menu';
 
+    const copyLinkBtn = document.createElement('button');
+    copyLinkBtn.className = 'dropdown-item';
+    copyLinkBtn.innerHTML = '<i data-lucide="copy"></i> Copy Link';
+    copyLinkBtn.onclick = async (e) => {
+      e.stopPropagation();
+      dropdown.classList.remove('active');
+      actions.classList.remove('menu-active');
+      try {
+        await navigator.clipboard.writeText(item.url);
+      } catch (err) {}
+    };
+    dropdown.appendChild(copyLinkBtn);
+
     if (isInsideGroup) {
       const removeFromGroupBtn = document.createElement('button');
       removeFromGroupBtn.className = 'dropdown-item';

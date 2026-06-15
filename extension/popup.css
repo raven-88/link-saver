@@ -674,6 +674,11 @@ li.yt-item .url-favicon {
 
 .group-select:focus, .new-group-inline-input:focus { border-color: var(--accent); }
 
+.group-select option, select option {
+  background-color: #1a1a24 !important;
+  color: #ffffff !important;
+}
+
 .group-selector-actions { display: flex; justify-content: flex-end; gap: 4px; }
 
 .group-select-btn {
