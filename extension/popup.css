@@ -1,24 +1,24 @@
 /* ─── Design Tokens ─── */
 :root {
-  --bg:            #0a0a0c;
-  --bg-elevated:   rgba(20, 20, 24, 0.4);
-  --bg-card:       #131317;
-  --bg-card-hover: #1b1b22;
+  --bg:            #0d0e10;
+  --bg-elevated:   rgba(23, 24, 28, 0.45);
+  --bg-card:       #16171c;
+  --bg-card-hover: #1f2127;
   --border:        rgba(255,255,255,0.05);
   --border-hover:  rgba(255,255,255,0.11);
-  --accent:        #0A84FF;
-  --accent-hover:  #3a9dff;
-  --accent-dim:    rgba(10,132,255,0.12);
-  --accent-glow:   rgba(10,132,255,0.06);
-  --accent-gradient: linear-gradient(135deg, #0A84FF 0%, #7000FF 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #3a9dff 0%, #8c33ff 100%);
-  --danger:        #FF453A;
-  --danger-dim:    rgba(255,69,58,0.12);
-  --success:       #32D74B;
-  --success-dim:   rgba(50,215,75,0.12);
-  --text:          rgba(255,255,255,0.96);
-  --text-2:        rgba(255,255,255,0.6);
-  --text-3:        rgba(255,255,255,0.3);
+  --accent:        #E26A45; /* Curated Brave/Tangerine warm copper */
+  --accent-hover:  #EE7C59;
+  --accent-dim:    rgba(226, 106, 69, 0.15);
+  --accent-glow:   rgba(226, 106, 69, 0.08);
+  --accent-gradient: linear-gradient(135deg, #E26A45 0%, #E9A056 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #EE7C59 0%, #F3B674 100%);
+  --danger:        #E05D52;
+  --danger-dim:    rgba(224, 93, 82, 0.12);
+  --success:       #59B586;
+  --success-dim:   rgba(89, 181, 134, 0.12);
+  --text:          #F1F2F4;
+  --text-2:        #A4A7B0;
+  --text-3:        #666974;
   --radius-xs:     5px;
   --radius-sm:     8px;
   --radius-md:     12px;
@@ -44,7 +44,7 @@ body {
   width: 420px;
   height: 560px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at 50% -20%, #151522 0%, #08080a 70%);
+  background: radial-gradient(circle at 50% -20%, #2b1f1a 0%, #0d0e10 75%);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
@@ -145,7 +145,7 @@ body {
 .nav-btn.active {
   background: var(--accent-gradient);
   color: #fff;
-  box-shadow: 0 3px 8px rgba(10, 132, 255, 0.25);
+  box-shadow: 0 3px 8px rgba(226, 106, 69, 0.25);
 }
 
 .nav-btn:active {
@@ -253,13 +253,13 @@ body {
   background: var(--accent-gradient);
   color: #fff;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(10, 132, 255, 0.25);
+  box-shadow: 0 2px 6px rgba(226, 106, 69, 0.25);
   border: none;
 }
 
 .btn-primary:hover {
   background: var(--accent-gradient-hover);
-  box-shadow: 0 4px 10px rgba(10, 132, 255, 0.35);
+  box-shadow: 0 4px 10px rgba(226, 106, 69, 0.35);
   transform: translateY(-0.5px);
 }
 
@@ -302,6 +302,15 @@ body {
 
 .btn-primary.already-saved:active {
   transform: scale(0.96) translateY(0);
+}
+
+.btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:active {
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--border);
+  color: var(--text-3);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* ─── Content Divider ─── */
@@ -467,15 +476,15 @@ ul.group-sublist li {
 ul#urlList li:not(.group-header):hover,
 ul.group-sublist li:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(10, 132, 255, 0.2);
+  border-color: var(--accent-dim);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px -4px rgba(10, 132, 255, 0.14);
+  box-shadow: 0 6px 20px -4px var(--accent-glow);
 }
 
 ul#urlList li:not(.group-header).yt-item:hover,
 ul.group-sublist li.yt-item:hover {
-  border-color: rgba(255, 69, 58, 0.2);
-  box-shadow: 0 6px 20px -4px rgba(255, 69, 58, 0.12);
+  border-color: var(--danger-dim);
+  box-shadow: 0 6px 20px -4px rgba(224, 93, 82, 0.08);
 }
 
 ul#urlList li:not(.group-header):hover .item-actions,

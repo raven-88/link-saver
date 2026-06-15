@@ -204,6 +204,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateSaveBtn(url) {
+    if (!url || url.startsWith('chrome://') || url.startsWith('brave://') || url.startsWith('edge://') || url.startsWith('about:')) {
+      saveBtn.innerHTML = `<i data-lucide="slash"></i><span>Restricted Tab</span>`;
+      saveBtn.className = 'btn btn-primary disabled';
+      saveBtn.disabled = true;
+      const savedPill = document.getElementById('savedStatusPill');
+      if (savedPill) savedPill.style.display = 'none';
+      lucide.createIcons();
+      return;
+    }
+    saveBtn.disabled = false;
     const isSaved = allUrls.some(item => item.url === url);
     const savedPill = document.getElementById('savedStatusPill');
     if (isSaved) {
@@ -297,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function getYoutubeVideoProgress(tabId) {
     try {
-      const [{ result }] = await chrome.scripting.executeScript({
+      const results = await chrome.scripting.executeScript({
         target: { tabId: tabId },
         func: () => {
           const video = document.querySelector('video');
@@ -310,7 +320,10 @@ document.addEventListener('DOMContentLoaded', () => {
           return null;
         }
       });
-      return result;
+      if (results && results.length > 0 && results[0]) {
+        return results[0].result;
+      }
+      return null;
     } catch (e) {
       console.warn('Could not read video state: ', e);
       return null;
@@ -381,12 +394,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  openAllBtn.addEventListener('click', async () => {
-    const tabs = await chrome.tabs.query({});
-    allUrls.forEach(item => {
-      const existingTab = tabs.find(t => t.url === item.url || t.pendingUrl === item.url);
-      if (!existingTab) {
-        chrome.tabs.create({ url: item.url });
+  function getPlayableUrl(item) {
+    let openUrlStr = item.url;
+    if (item.ytProgress && item.ytProgress.currentTime > 5 && item.ytProgress.currentTime < item.ytProgress.duration - 5) {
+      const seconds = Math.floor(item.ytProgress.currentTime);
+      try {
+        const urlObj = new URL(openUrlStr);
+        urlObj.searchParams.set('t', seconds + 's');
+        openUrlStr = urlObj.toString();
+      } catch {}
+    }
+    return openUrlStr;
+  }
+
+  openAllBtn.addEventListener('click', () => {
+    chrome.storage.local.get({ deleteAfterOpen: false }, (result) => {
+      allUrls.forEach(item => {
+        chrome.tabs.create({ url: getPlayableUrl(item) });
+      });
+      if (result.deleteAfterOpen) {
+        chrome.storage.local.set({ urls: [] }, loadData);
       }
     });
   });
@@ -695,15 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
     infoDiv.appendChild(groupSelectorWrap);
 
     const openUrl = async () => {
-      let openUrlStr = item.url;
-      if (item.ytProgress && item.ytProgress.currentTime > 5 && item.ytProgress.currentTime < item.ytProgress.duration - 5) {
-        const seconds = Math.floor(item.ytProgress.currentTime);
-        try {
-          const urlObj = new URL(openUrlStr);
-          urlObj.searchParams.set('t', seconds + 's');
-          openUrlStr = urlObj.toString();
-        } catch {}
-      }
+      const openUrlStr = getPlayableUrl(item);
 
       const tabs = await chrome.tabs.query({});
       const existingTab = tabs.find(t => {
@@ -868,12 +887,15 @@ document.addEventListener('DOMContentLoaded', () => {
       openGroupBtn.className = 'open-group-btn';
       openGroupBtn.title = `Open all tabs from ${group.label}`;
       openGroupBtn.innerHTML = '<i data-lucide="external-link"></i>';
-      openGroupBtn.onclick = async () => {
-        const tabs = await chrome.tabs.query({});
-        group.items.forEach(item => {
-          const existingTab = tabs.find(t => t.url === item.url || t.pendingUrl === item.url);
-          if (!existingTab) {
-            chrome.tabs.create({ url: item.url });
+      openGroupBtn.onclick = () => {
+        chrome.storage.local.get({ deleteAfterOpen: false, urls: [] }, (result) => {
+          group.items.forEach(item => {
+            chrome.tabs.create({ url: getPlayableUrl(item) });
+          });
+          if (result.deleteAfterOpen) {
+            const urlsToRemove = new Set(group.items.map(item => item.url));
+            const remainingUrls = result.urls.filter(item => !urlsToRemove.has(item.url));
+            chrome.storage.local.set({ urls: remainingUrls }, loadData);
           }
         });
       };
@@ -948,13 +970,15 @@ document.addEventListener('DOMContentLoaded', () => {
       openGroupBtn.onclick = (e) => {
         e.stopPropagation();
         if (groupUrls.length === 0) return;
-        chrome.tabs.query({}, (tabs) => {
+        chrome.storage.local.get({ deleteAfterOpen: false, urls: [] }, (result) => {
           groupUrls.forEach(item => {
-            const existingTab = tabs.find(t => t.url === item.url || t.pendingUrl === item.url);
-            if (!existingTab) {
-              chrome.tabs.create({ url: item.url });
-            }
+            chrome.tabs.create({ url: getPlayableUrl(item) });
           });
+          if (result.deleteAfterOpen) {
+            const urlsToRemove = new Set(groupUrls.map(item => item.url));
+            const remainingUrls = result.urls.filter(item => !urlsToRemove.has(item.url));
+            chrome.storage.local.set({ urls: remainingUrls }, loadData);
+          }
         });
       };
 
